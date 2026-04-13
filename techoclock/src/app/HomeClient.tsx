@@ -175,9 +175,9 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
           <div className="hero-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 340px', borderBottom: '1px solid rgba(41,196,246,0.1)' }}>
             <Link href={`/posts/${featuredPost.slug}`} style={{ textDecoration: 'none', borderRight: '1px solid rgba(41,196,246,0.1)', display: 'flex', flexDirection: 'column' }}>
               {/* Image or YouTube thumbnail */}
-              <div style={{ width: '100%', height: '260px', overflow: 'hidden', backgroundColor: 'rgba(41,196,246,0.08)' }}>
+              <div style={{ width: '100%', height: '320px', overflow: 'hidden', backgroundColor: 'rgba(41,196,246,0.08)' }}>
                 {featuredPost.cover_image_url ? (
-                  <img src={featuredPost.cover_image_url} alt={featuredPost.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  <img src={featuredPost.cover_image_url} alt={featuredPost.title} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center center' }} />
                 ) : featuredPost.youtube_url ? (
                   <img src={`https://img.youtube.com/vi/${featuredPost.youtube_url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\n?#]+)/)?.[1]}/maxresdefault.jpg`}
                     alt={featuredPost.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />

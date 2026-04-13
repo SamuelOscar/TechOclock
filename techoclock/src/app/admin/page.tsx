@@ -2,6 +2,9 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
 import Image from 'next/image';
+import dynamic from 'next/dynamic';
+
+const MDEditor = dynamic(() => import('@uiw/react-md-editor'), { ssr: false });
 
 const ADMIN_PASSWORD = 'techoclock2026';
 const categories = ['AI Tools', 'Funding', 'Africa Tech', 'Startups', 'Cloud', 'Research', 'Enterprise', 'Newsletter'];
@@ -16,6 +19,7 @@ type Post = {
   slug: string;
   category: string;
   summary: string;
+  content: string;
   cover_image_url: string;
   youtube_url: string;
   source_link: string;
@@ -74,6 +78,7 @@ function NewPostForm() {
   const [title, setTitle] = useState('');
   const [category, setCategory] = useState('AI Tools');
   const [summary, setSummary] = useState('');
+  const [content, setContent] = useState('');
   const [youtubeUrl, setYoutubeUrl] = useState('');
   const [sourceLink, setSourceLink] = useState('');
   const [author, setAuthor] = useState("Tech O'clock");
@@ -113,6 +118,7 @@ function NewPostForm() {
       const slug = slugify(title);
       const { error } = await supabase.from('posts').insert({
         title, slug, category, summary,
+        content,
         youtube_url: youtubeUrl, source_link: sourceLink, author,
         cover_image_url: coverImageUrl, status: postStatus,
         published_at: postStatus === 'published' ? new Date().toISOString() : null,
@@ -158,6 +164,22 @@ function NewPostForm() {
         <textarea value={summary} onChange={(e) => setSummary(e.target.value)}
           placeholder="Write your summary or paste your content here..." rows={5}
           style={{ ...inputStyle, resize: 'vertical', fontFamily: 'inherit' }} />
+      </div>
+
+      {/* Rich Content Editor */}
+      <div>
+        <label style={labelStyle}>Full Content (Markdown supported)</label>
+        <p style={{ fontSize: '11px', color: 'rgba(255,255,255,0.3)', marginBottom: '8px' }}>
+          Supports **bold**, ## headings, - bullet points, [links](url), and more
+        </p>
+        <div data-color-mode="dark">
+          <MDEditor
+            value={content}
+            onChange={(val) => setContent(val || '')}
+            height={400}
+            preview="live"
+          />
+        </div>
       </div>
 
       <div>
@@ -246,6 +268,7 @@ function ManagePosts() {
       title: editingPost.title,
       category: editingPost.category,
       summary: editingPost.summary,
+      content: editingPost.content,
       youtube_url: editingPost.youtube_url,
       source_link: editingPost.source_link,
       author: editingPost.author,

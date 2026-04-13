@@ -1,6 +1,8 @@
 'use client';
 import Image from 'next/image';
 import Link from 'next/link';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 type Post = {
   id: string;
@@ -8,6 +10,7 @@ type Post = {
   slug: string;
   category: string;
   summary: string;
+  content: string;
   cover_image_url: string;
   youtube_url: string;
   source_link: string;
@@ -87,13 +90,27 @@ export default function PostClient({ post }: { post: Post }) {
           </div>
         )}
 
-        {/* Summary */}
-        <div style={{
-          fontSize: '16px', lineHeight: '1.8',
-          color: 'rgba(255,255,255,0.75)',
-          marginBottom: '2rem', whiteSpace: 'pre-wrap',
-        }}>
-          {post.summary}
+        {/* Content — renders markdown if available, falls back to summary */}
+        <div style={{ fontSize: '16px', lineHeight: '1.8', color: 'rgba(255,255,255,0.75)', marginBottom: '2rem' }}>
+          <ReactMarkdown
+            remarkPlugins={[remarkGfm]}
+            components={{
+              h1: ({children}) => <h1 style={{ fontSize: '28px', fontWeight: '700', color: '#fff', margin: '2rem 0 1rem' }}>{children}</h1>,
+              h2: ({children}) => <h2 style={{ fontSize: '22px', fontWeight: '700', color: '#fff', margin: '1.75rem 0 0.75rem', borderBottom: '1px solid rgba(41,196,246,0.2)', paddingBottom: '0.5rem' }}>{children}</h2>,
+              h3: ({children}) => <h3 style={{ fontSize: '18px', fontWeight: '700', color: '#29c4f6', margin: '1.5rem 0 0.5rem' }}>{children}</h3>,
+              p: ({children}) => <p style={{ marginBottom: '1rem', lineHeight: '1.8', color: 'rgba(255,255,255,0.75)' }}>{children}</p>,
+              strong: ({children}) => <strong style={{ color: '#fff', fontWeight: '700' }}>{children}</strong>,
+              a: ({href, children}) => <a href={href} target="_blank" rel="noopener noreferrer" style={{ color: '#29c4f6', textDecoration: 'underline' }}>{children}</a>,
+              ul: ({children}) => <ul style={{ paddingLeft: '1.5rem', marginBottom: '1rem' }}>{children}</ul>,
+              ol: ({children}) => <ol style={{ paddingLeft: '1.5rem', marginBottom: '1rem' }}>{children}</ol>,
+              li: ({children}) => <li style={{ marginBottom: '0.5rem', color: 'rgba(255,255,255,0.75)' }}>{children}</li>,
+              hr: () => <hr style={{ border: 'none', borderTop: '1px solid rgba(255,255,255,0.1)', margin: '2rem 0' }} />,
+              blockquote: ({children}) => <blockquote style={{ borderLeft: '3px solid #29c4f6', paddingLeft: '1rem', margin: '1.5rem 0', color: 'rgba(255,255,255,0.6)', fontStyle: 'italic' }}>{children}</blockquote>,
+              code: ({children}) => <code style={{ backgroundColor: 'rgba(41,196,246,0.1)', padding: '2px 6px', borderRadius: '4px', fontSize: '14px', color: '#29c4f6' }}>{children}</code>,
+            }}
+          >
+            {post.content || post.summary}
+          </ReactMarkdown>
         </div>
 
         {/* Source Link */}

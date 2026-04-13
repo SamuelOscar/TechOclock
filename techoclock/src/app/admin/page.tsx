@@ -4,7 +4,7 @@ import { supabase } from '@/lib/supabase';
 import Image from 'next/image';
 
 const ADMIN_PASSWORD = 'techoclock2026';
-const categories = ['AI Tools', 'Funding', 'Africa Tech', 'Startups', 'Cloud', 'Research', 'Enterprise'];
+const categories = ['AI Tools', 'Funding', 'Africa Tech', 'Startups', 'Cloud', 'Research', 'Enterprise', 'Newsletter'];
 
 function slugify(text: string) {
   return text.toLowerCase().replace(/[^a-z0-9 -]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-').trim();

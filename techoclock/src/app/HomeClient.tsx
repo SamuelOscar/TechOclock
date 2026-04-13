@@ -3,8 +3,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
 
-const categories = ['All', 'AI Tools', 'Funding', 'Africa Tech', 'Startups', 'Cloud', 'Research', 'Enterprise'];
-const pages = ['Home', 'AI Tools', 'Startups', 'Funding', 'About'];
+const categories = ['All', 'AI Tools', 'Funding', 'Africa Tech', 'Startups', 'Cloud', 'Research', 'Enterprise', 'Newsletter'];
+const pages = ['Home', 'AI Tools', 'Startups', 'Funding', 'Newsletter', 'About'];
 
 type Post = {
   id: string;
@@ -142,12 +142,21 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
           </div>
           <div style={{ display: 'inline-block', fontSize: '10px', fontWeight: '600', letterSpacing: '0.1em', textTransform: 'uppercase', backgroundColor: 'rgba(193,241,53,0.15)', color: '#c1f135', padding: '4px 12px', borderRadius: '4px', marginBottom: '1.5rem' }}>{activePage}</div>
           <h1 style={{ fontSize: '36px', fontWeight: '700', color: '#fff', marginBottom: '1rem' }}>
-            {activePage === 'About' ? "About Tech O'clock" : `${activePage} News`}
+            {activePage === 'About' ? "About Tech O'clock" : activePage === 'Newsletter' ? "Tech O'clock Weekly" : `${activePage} News`}
           </h1>
           <p style={{ fontSize: '15px', color: 'rgba(255,255,255,0.5)', maxWidth: '500px', margin: '0 auto 2rem', lineHeight: '1.7' }}>
-            {activePage === 'About' ? "Tech O'clock is a Tech Media Platform educating businesses on AI and emerging technologies. Based in Kigali, Rwanda." : `The latest ${activePage} stories, curated for professionals and businesses. Coming soon.`}
+            {activePage === 'About'
+              ? "Tech O'clock is a Tech Media Platform educating businesses on AI and emerging technologies. Based in Kigali, Rwanda."
+              : activePage === 'Newsletter'
+              ? "Your weekly digest of the most important AI and tech news."
+              : `The latest ${activePage} stories, curated for professionals and businesses. Coming soon.`}
           </p>
-          <button onClick={() => setActivePage('Home')} style={{ backgroundColor: '#c1f135', color: '#080e5e', border: 'none', padding: '10px 24px', borderRadius: '6px', fontSize: '13px', fontWeight: '700', cursor: 'pointer' }}>← Back to Home</button>
+          <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}>
+            {activePage === 'Newsletter' && (
+              <a href="/newsletter" style={{ backgroundColor: '#c1f135', color: '#080e5e', border: 'none', padding: '10px 24px', borderRadius: '6px', fontSize: '13px', fontWeight: '700', textDecoration: 'none' }}>View All Editions →</a>
+            )}
+            <button onClick={() => setActivePage('Home')} style={{ backgroundColor: 'rgba(255,255,255,0.08)', color: '#fff', border: '1px solid rgba(255,255,255,0.15)', padding: '10px 24px', borderRadius: '6px', fontSize: '13px', fontWeight: '700', cursor: 'pointer' }}>← Back to Home</button>
+          </div>
         </div>
       )}
 

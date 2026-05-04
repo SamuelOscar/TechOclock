@@ -115,7 +115,8 @@ function NewPostForm() {
         const { data: urlData } = supabase.storage.from('post-images').getPublicUrl(fileName);
         coverImageUrl = urlData.publicUrl;
       }
-      const slug = slugify(title);
+      const baseSlug = slugify(title);
+      const slug = `${baseSlug}-${Date.now().toString().slice(-5)}`;
       const { error } = await supabase.from('posts').insert({
         title, slug, category, summary,
         content,
